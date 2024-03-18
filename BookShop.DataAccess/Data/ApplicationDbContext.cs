@@ -30,6 +30,21 @@ public class ApplicationDbContext : DbContext
             }
 
             );
+
+        modelBuilder.Entity<Product>().HasData(
+
+            new
+            {
+                Id = 1,
+                Title = "Knjiga",
+                Description = "Ovo je primjer knjige",
+                ISBN = "AB25",
+                Author = "Patrik Ocelic",
+                ListPrice = 50.0,
+                Price = 50.0,
+                Price50 = 40.0,
+                Price100 = 25.0
+            });
     }
 
 }
