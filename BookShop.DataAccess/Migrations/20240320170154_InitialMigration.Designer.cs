@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookShop.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240318184338_Fixed Product decimal prices input")]
-    partial class FixedProductdecimalpricesinput
+    [Migration("20240320170154_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,11 +77,18 @@ namespace BookShop.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ISBN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -103,6 +110,8 @@ namespace BookShop.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Products");
 
                     b.HasData(
@@ -110,14 +119,27 @@ namespace BookShop.DataAccess.Migrations
                         {
                             Id = 1,
                             Author = "Patrik Ocelic",
+                            CategoryId = 1,
                             Description = "Ovo je primjer knjige",
                             ISBN = "AB25",
+                            ImageUrl = "slika.jpg",
                             ListPrice = 50.0,
                             Price = 50.0,
                             Price100 = 25.0,
                             Price50 = 40.0,
                             Title = "Knjiga"
                         });
+                });
+
+            modelBuilder.Entity("BookShop.Models.Models.Product", b =>
+                {
+                    b.HasOne("BookShop.Models.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }

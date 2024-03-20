@@ -5,7 +5,7 @@ using BookShop.Models.Models;
 using BookShop.DataAccess.Repository;
 using BookShop.DataAccess.Repository.IRepository;
 
-namespace BookShop.Controllers
+namespace BookShop.Areas.Admin.Controllers
 {
     public class CategoryController : Controller
     {
@@ -35,15 +35,15 @@ namespace BookShop.Controllers
         [HttpPost]
         public IActionResult Create(Category category)
         {
-            if(category.Name.Length > 10)
+            if (category.Name.Length > 10)
             {
                 ModelState.AddModelError("Name", "The name must not be longer than 10 characters.");
             }
-            if(category.Name == category.DisplayOrder.ToString())
+            if (category.Name == category.DisplayOrder.ToString())
             {
                 ModelState.AddModelError("Name", "The display order can not be the same as name.");
             }
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _unitOfWork.Category.Add(category);
                 _unitOfWork.Save();
@@ -56,14 +56,14 @@ namespace BookShop.Controllers
 
         public IActionResult Edit(int? categoryId)
         {
-            if(categoryId == null || categoryId == 0)
+            if (categoryId == null || categoryId == 0)
             {
                 return NotFound();
-            } 
+            }
             Category? category = _unitOfWork.Category.Get(c => c.Id == categoryId);
             //Category? category1 = _context.Categories.Find(categoryId);
             //Category? category2 = _context.Categories.Where(c => c.Id == categoryId).FirstOrDefault();
-            if(category == null)
+            if (category == null)
             {
                 return NotFound();
             }
@@ -103,7 +103,7 @@ namespace BookShop.Controllers
         public IActionResult DeletePOST(int? categoryId)
         {
             Category? category = _unitOfWork.Category.Get(c => c.Id == categoryId);
-            if(category == null)
+            if (category == null)
             {
                 return NotFound();
             }

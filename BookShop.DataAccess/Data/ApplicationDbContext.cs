@@ -31,7 +31,7 @@ public class ApplicationDbContext : DbContext
 
             );
 
-        modelBuilder.Entity<Product>().HasData(
+       modelBuilder.Entity<Product>().HasData(
 
             new
             {
@@ -43,7 +43,9 @@ public class ApplicationDbContext : DbContext
                 ListPrice = 50.0,
                 Price = 50.0,
                 Price50 = 40.0,
-                Price100 = 25.0
+                Price100 = 25.0,
+                CategoryId = 1,
+                ImageUrl = "slika.jpg"
             });
     }
 

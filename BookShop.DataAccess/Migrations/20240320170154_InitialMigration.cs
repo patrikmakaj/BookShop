@@ -7,7 +7,7 @@
 namespace BookShop.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class FixedProductdecimalpricesinput : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,11 +39,19 @@ namespace BookShop.DataAccess.Migrations
                     ListPrice = table.Column<double>(type: "float", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     Price50 = table.Column<double>(type: "float", nullable: false),
-                    Price100 = table.Column<double>(type: "float", nullable: false)
+                    Price100 = table.Column<double>(type: "float", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Products_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -58,18 +66,23 @@ namespace BookShop.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "Author", "Description", "ISBN", "ListPrice", "Price", "Price100", "Price50", "Title" },
-                values: new object[] { 1, "Patrik Ocelic", "Ovo je primjer knjige", "AB25", 50.0, 50.0, 25.0, 40.0, "Knjiga" });
+                columns: new[] { "Id", "Author", "CategoryId", "Description", "ISBN", "ImageUrl", "ListPrice", "Price", "Price100", "Price50", "Title" },
+                values: new object[] { 1, "Patrik Ocelic", 1, "Ovo je primjer knjige", "AB25", "slika.jpg", 50.0, 50.0, 25.0, 40.0, "Knjiga" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_CategoryId",
+                table: "Products",
+                column: "CategoryId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Categories");
         }
     }
 }
