@@ -22,50 +22,36 @@
     </div>
 </div>
 
-<table class="table table-bordered table-striped">
+<table id="tblData" class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>
                 Title
             </th>
             <th>
-                Author
-            </th>
-            <th>
                 ISBN
             </th>
             <th>
-                Price
+                Author
+            </th>
+            <th>
+                ListPrice
+            </th>
+            <th>
+                Category
+            </th>
+            <th>
+
             </th>
         </tr>
     </thead>
-    <tbody>
-        @foreach (var product in Model)
-        {
-            <tr>
-                <td>
-                    @product.Title
-                </td>
-                <td>
-                    @product.Author
-                </td>
-                <td>
-                    @product.ISBN
-                </td>
-                <td>
-                    @product.Price
-                </td>
-                <td>
-                    <div class="w-75 btn-group" role="group">
-                        <a asp-controller="Product" asp-action="Upsert" asp-route-productId="@product.Id" class="btn btn-primary mx-2">
-                            <i class="bi bi-pencil-square"></i> Edit
-                        </a>
-                        <a asp-controller="Product" asp-action="Delete" asp-route-productId="@product.Id" class="btn btn-primary mx-2">
-                            <i class="bi bi-trash3"></i> Delete
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
+    @* <tbody>
+
+    </tbody> *@
 </table>
+
+@section Scripts {
+    @{
+        <script src="~/js/product.js"></script>
+    }
+}

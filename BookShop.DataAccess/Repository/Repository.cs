@@ -18,6 +18,7 @@ namespace BookShop.DataAccess.Repository
         {
             _context = context;
             dbSet = _context.Set<T>();
+            //_context.Products.Include(p => p.Category); bez onog dijela u Get i GetAll, svaki put pri pozivanju Category je dostupan svugdje gdje ima Product -> nije optimizirano
         }
         public void Add(T entity)
         {
@@ -34,16 +35,32 @@ namespace BookShop.DataAccess.Repository
             dbSet.RemoveRange(entities);
         }
 
-        public T Get(Expression<Func<T, bool>> filter)
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
             query = query.Where(filter);
+            if(!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach(var  property in includeProperties
+                    .Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(property);
+                }
+            }
             return query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var property in includeProperties
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(property);
+                }
+            }
             return query.ToList();
         }
     }
